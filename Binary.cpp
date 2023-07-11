@@ -1,33 +1,46 @@
 
 #include <iostream>
-using namespace std;
+#include <vector>
 
-int binarySearch(int arr[], int l, int r, int x)
-{
-    while (l <= r) {
-        int m = l + (r - l) / 2;
+class BinarySearch {
+private:
+    std::vector<int> arr;
 
-        if (arr[m] == x)
-            return m;
+public:
+    BinarySearch(const std::vector<int>& inputArray) : arr(inputArray) {}
 
-        if (arr[m] < x)
-            l = m + 1;
+    int search(int target) {
+        int left = 0;
+        int right = arr.size() - 1;
 
-        else
-            r = m - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1; // Return -1 if the target is not found
+    }
+};
+
+int main() {
+    std::vector<int> array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int target = 6;
+
+    BinarySearch binarySearch(array);
+    int index = binarySearch.search(target);
+
+    if (index != -1) {
+        std::cout << "Target found at index " << index << std::endl;
+    } else {
+        std::cout << "Target not found" << std::endl;
     }
 
-    return -1;
-}
-
-int main(void)
-{
-    int arr[] = { 2, 3, 4, 10, 40 };
-    int x = 10;
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int result = binarySearch(arr, 0, n - 1, x);
-    (result == -1)
-        ? cout << "Element is not present in array"
-        : cout << "Element is present at index " << result;
     return 0;
 }
