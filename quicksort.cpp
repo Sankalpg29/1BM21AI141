@@ -1,84 +1,65 @@
 #include <iostream>
-using namespace std;
-class QuickSort
-{
-    int n, a[100];
+#include <vector>
 
+// Class to keep track of the basic operations
+class OperationCounter {
 public:
-    void Run();
-    void swap(int &, int &);
-    void print(int[], int);
-    int partition(int[], int, int);
-    void quicksort(int[], int, int);
+    static int count;
+
+    static void increment() {
+        count++;
+    }
 };
-void QuickSort::Run()
-{
-    cout << "\n Enter the size of the array:";
-    cin >> n;
-    cout << "\n Now Enter the element of the Array:";
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-    }
-    a[n + 1] = 1000;
-    quicksort(a, 0, n + 1);
-    print(a, n);
-}
-void QuickSort::swap(int &a, int &b)
-{
-    int temp = a;
-    a = b;
-    b = temp;
+
+int OperationCounter::count = 0;
+
+// Swap two elements in the vector
+void swap(std::vector<int>& arr, int i, int j) {
+    OperationCounter::increment();
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
 
-void QuickSort::print(int a[], int size)
-{
-    cout << "\n This is the array:";
-    for (int i = 0; i < size; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << endl;
-}
+// Partition the array and return the pivot index
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
 
-int QuickSort::partition(int a[], int l, int h)
-{
-    int pivot = a[l];
-    int i = l, j = h;
-    while (i < j)
-    {
-        do
-        {
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
             i++;
-        } while (a[i] <= pivot);
-
-        do
-        {
-            j--;
-
-        } while (a[j] > pivot);
-        if (i < j)
-        {
-            swap(a[i], a[j]);
+            swap(arr, i, j);
         }
     }
 
-    swap(a[l], a[j]);
-
-    return j;
+    swap(arr, i + 1, high);
+    return i + 1;
 }
-void QuickSort::quicksort(int a[], int l, int h)
-{
-    if (l < h)
-    {
-        int q = partition(a, l, h);
-        quicksort(a, l, q);
-        quicksort(a, q + 1, h);
+
+// Quicksort algorithm
+void quickSort(std::vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
     }
 }
-int main()
-{
-    QuickSort q;
-    q.Run();
+
+int main() {
+    std::vector<int> arr = {9, 3, 2, 7, 6, 1, 5, 4, 8};
+    int n = arr.size();
+
+    OperationCounter::count = 0;
+    quickSort(arr, 0, n - 1);
+
+    std::cout << "Sorted array: ";
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Number of basic operations executed: " << OperationCounter::count << std::endl;
+
     return 0;
 }
