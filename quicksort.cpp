@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-// Class to keep track of the basic operations
+
 class OperationCounter {
 public:
     static int count;
@@ -13,7 +13,7 @@ public:
 
 int OperationCounter::count = 0;
 
-// Swap two elements in the vector
+
 void swap(std::vector<int>& arr, int i, int j) {
     OperationCounter::increment();
     int temp = arr[i];
@@ -21,7 +21,7 @@ void swap(std::vector<int>& arr, int i, int j) {
     arr[j] = temp;
 }
 
-// Partition the array and return the pivot index
+
 int partition(std::vector<int>& arr, int low, int high) {
     int pivot = arr[high];
     int i = low - 1;
@@ -37,7 +37,6 @@ int partition(std::vector<int>& arr, int low, int high) {
     return i + 1;
 }
 
-// Quicksort algorithm
 void quickSort(std::vector<int>& arr, int low, int high) {
     if (low < high) {
         int pivotIndex = partition(arr, low, high);
