@@ -4,48 +4,59 @@ class SelectionSort {
 private:
     int* arr;
     int size;
+    int operations; // Counter for basic operations
 
 public:
-    SelectionSort(int* array, int arraySize) {
+    SelectionSort(int* array, int n) {
         arr = array;
-        size = arraySize;
+        size = n;
+        operations = 0;
     }
 
-    void sort() {
+    void swap(int& a, int& b) {
+        int temp = a;
+        a = b;
+        b = temp;
+        operations += 3; // Counting swap as 3 basic operations
+    }
+
+    void selectionSort() {
         for (int i = 0; i < size - 1; ++i) {
             int minIndex = i;
-
             for (int j = i + 1; j < size; ++j) {
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
+                    operations += 1; // Counting comparison as 1 basic operation
                 }
+                operations += 1; // Counting comparison as 1 basic operation
             }
-
-            if (minIndex != i) {
-                swap(arr[i], arr[minIndex]);
-            }
+            swap(arr[i], arr[minIndex]);
         }
     }
 
-    void display() {
+    void printArray() {
         for (int i = 0; i < size; ++i) {
             std::cout << arr[i] << " ";
         }
         std::cout << std::endl;
     }
+
+    int getOperationsCount() {
+        return operations;
+    }
 };
 
 int main() {
-    int arr[] = { 64, 25, 12, 22, 11 };
+    int arr[] = {64, 25, 12, 22, 11};
     int size = sizeof(arr) / sizeof(arr[0]);
 
     SelectionSort selectionSort(arr, size);
-    std::cout << "Original array: ";
-    selectionSort.display();
+    selectionSort.selectionSort();
 
-    selectionSort.sort();
     std::cout << "Sorted array: ";
-    selectionSort.display();
+    selectionSort.printArray();
+
+    std::cout << "Basic operations executed: " << selectionSort.getOperationsCount() << std::endl;
 
     return 0;
 }
